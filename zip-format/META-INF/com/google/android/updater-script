@@ -1,6 +1,6 @@
 show_progress(0.1, 0);
 ui_print(" ");
-ui_print("Installing Nova Kernel...");
+ui_print("Installing NOVA Kernel...");
 ui_print(" ");
 ui_print(" ");
 show_progress(0.200000, 0);
