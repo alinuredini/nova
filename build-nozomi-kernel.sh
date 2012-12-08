@@ -6,7 +6,7 @@
 
 # Variables
 working_dir=/home/hei/android;
-kernel_dir=/home/hei/android/NovaKernel;
+kernel_dir=/home/hei/android/nova;
 toolchain=/home/hei/android/toolchains/arm-eabi-4.4.3/bin/arm-eabi-;
 
 # Enable ccache
@@ -16,7 +16,7 @@ export USE_CCACHE=1;
 cd $kernel_dir;
 
 # Config Nozomi (Sony Xperia S) Kernel
-cp arch/arm/configs/nova_nozomi_defconfig .config;
+cp arch/arm/configs/nozomi_defconfig .config;
 make ARCH=arm CROSS_COMPILE=$toolchain oldconfig;
 
 # Build Kernel

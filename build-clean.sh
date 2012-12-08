@@ -5,7 +5,7 @@
 # By Hei1125
 
 # Variables
-kernel_dir=/home/hei/android/NovaKernel;
+kernel_dir=/home/hei/android/nova;
 
 # Go to Kernel Folder
 cd $kernel_dir;
