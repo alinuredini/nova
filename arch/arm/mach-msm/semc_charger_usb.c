@@ -25,6 +25,8 @@
 #include <linux/power_supply.h>
 #include <mach/msm_hsusb.h>
 #include <mach/semc_charger_usb.h>
+#include <mach/rpm.h>
+#include <linux/fastchg.h>
 
 #define CHGUSB_DISC_WAKELOCK_TIMEOUT (HZ * 2) /* 2sec */
 #define CHGUSB_CONN_WAKELOCK_TIMEOUT (HZ * 5) /* 5sec */
@@ -214,11 +216,18 @@ void semc_charger_usb_vbus_draw(unsigned mA)
 	pr_debug("%s(%d)\n", __func__, mA);
 	semc_chg_usb_state.usb_chg_current_ma = mA;
 
+	
 	if (semc_chg_usb_state.connected & SEMC_CHARGER_WALL)
 		power_supply_changed(&semc_chg_usb_state.supply_ac);
 	else
+#ifdef CONFIG_FORCE_FAST_CHARGE
+		if (force_fast_charge == 1) {
+			power_supply_changed(&semc_chg_usb_state.supply_ac);
+		else
+			power_supply_changed(&semc_chg_usb_state.supply_usb);
+#else
 		power_supply_changed(&semc_chg_usb_state.supply_usb);
-
+#endif
 vbus_draw_end:
 	spin_unlock_irqrestore(&semc_chg_usb_state.lock, flags);
 }
@@ -242,8 +251,14 @@ void semc_charger_usb_connected(enum chg_type chgtype)
 		if (semc_chg_usb_state.connected & SEMC_CHARGER_WALL)
 			power_supply_changed(&semc_chg_usb_state.supply_ac);
 		else
+#ifdef CONFIG_FORCE_FAST_CHARGE
+			if (force_fast_charge == 1) {
+				power_supply_changed(&semc_chg_usb_state.supply_ac);
+			else
+				power_supply_changed(&semc_chg_usb_state.supply_usb);
+#else
 			power_supply_changed(&semc_chg_usb_state.supply_usb);
-
+#endif
 		wake_lock_timeout(&semc_chg_usb_state.chgusb_wake_lock,
 			CHGUSB_DISC_WAKELOCK_TIMEOUT);
 		goto usb_connected_end;
@@ -257,7 +272,14 @@ void semc_charger_usb_connected(enum chg_type chgtype)
 		power_supply_changed(&semc_chg_usb_state.supply_ac);
 		semc_chg_usb_state.connected |= SEMC_CHARGER_WALL;
 	} else {
-		power_supply_changed(&semc_chg_usb_state.supply_usb);
+#ifdef CONFIG_FORCE_FAST_CHARGE
+			if (force_fast_charge == 1) {
+				power_supply_changed(&semc_chg_usb_state.supply_ac);
+			else
+				power_supply_changed(&semc_chg_usb_state.supply_usb);
+#else
+			power_supply_changed(&semc_chg_usb_state.supply_usb);
+#endif
 		semc_chg_usb_state.connected |= SEMC_CHARGER_PC;
 	}
 usb_connected_end:
