@@ -221,10 +221,11 @@ void semc_charger_usb_vbus_draw(unsigned mA)
 		power_supply_changed(&semc_chg_usb_state.supply_ac);
 	else
 #ifdef CONFIG_FORCE_FAST_CHARGE
-		if (force_fast_charge == 1) 
+		if (force_fast_charge == 1) {
 			power_supply_changed(&semc_chg_usb_state.supply_ac);
-		else
+		} else {
 			power_supply_changed(&semc_chg_usb_state.supply_usb);
+		}
 #else
 		power_supply_changed(&semc_chg_usb_state.supply_usb);
 #endif
@@ -252,10 +253,11 @@ void semc_charger_usb_connected(enum chg_type chgtype)
 			power_supply_changed(&semc_chg_usb_state.supply_ac);
 		else
 #ifdef CONFIG_FORCE_FAST_CHARGE
-			if (force_fast_charge == 1) 
+			if (force_fast_charge == 1) {
 				power_supply_changed(&semc_chg_usb_state.supply_ac);
-			else
+			} else {
 				power_supply_changed(&semc_chg_usb_state.supply_usb);
+			}
 #else
 			power_supply_changed(&semc_chg_usb_state.supply_usb);
 #endif
@@ -273,14 +275,18 @@ void semc_charger_usb_connected(enum chg_type chgtype)
 		semc_chg_usb_state.connected |= SEMC_CHARGER_WALL;
 	} else {
 #ifdef CONFIG_FORCE_FAST_CHARGE
-			if (force_fast_charge == 1) 
+			if (force_fast_charge == 1) {
 				power_supply_changed(&semc_chg_usb_state.supply_ac);
-			else
+				semc_chg_usb_state.connected |= SEMC_CHARGER_WALL;
+			} else {
 				power_supply_changed(&semc_chg_usb_state.supply_usb);
+				semc_chg_usb_state.connected |= SEMC_CHARGER_PC;
+			}
 #else
 			power_supply_changed(&semc_chg_usb_state.supply_usb);
+			semc_chg_usb_state.connected |= SEMC_CHARGER_PC;
 #endif
-		semc_chg_usb_state.connected |= SEMC_CHARGER_PC;
+		
 	}
 usb_connected_end:
 	spin_unlock_irqrestore(&semc_chg_usb_state.lock, flags);
