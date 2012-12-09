@@ -221,7 +221,7 @@ void semc_charger_usb_vbus_draw(unsigned mA)
 		power_supply_changed(&semc_chg_usb_state.supply_ac);
 	else
 #ifdef CONFIG_FORCE_FAST_CHARGE
-		if (force_fast_charge == 1) {
+		if (force_fast_charge == 1) 
 			power_supply_changed(&semc_chg_usb_state.supply_ac);
 		else
 			power_supply_changed(&semc_chg_usb_state.supply_usb);
@@ -252,7 +252,7 @@ void semc_charger_usb_connected(enum chg_type chgtype)
 			power_supply_changed(&semc_chg_usb_state.supply_ac);
 		else
 #ifdef CONFIG_FORCE_FAST_CHARGE
-			if (force_fast_charge == 1) {
+			if (force_fast_charge == 1) 
 				power_supply_changed(&semc_chg_usb_state.supply_ac);
 			else
 				power_supply_changed(&semc_chg_usb_state.supply_usb);
@@ -273,7 +273,7 @@ void semc_charger_usb_connected(enum chg_type chgtype)
 		semc_chg_usb_state.connected |= SEMC_CHARGER_WALL;
 	} else {
 #ifdef CONFIG_FORCE_FAST_CHARGE
-			if (force_fast_charge == 1) {
+			if (force_fast_charge == 1) 
 				power_supply_changed(&semc_chg_usb_state.supply_ac);
 			else
 				power_supply_changed(&semc_chg_usb_state.supply_usb);
