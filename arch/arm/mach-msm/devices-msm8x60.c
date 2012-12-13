@@ -1121,7 +1121,6 @@ struct platform_device msm_kgsl_2d0 = {
 		.platform_data = &kgsl_2d0_pdata,
 	},
 };
-#ifdef CONFIG_GPU_OVERCLOCK
 static struct resource kgsl_2d1_resources[] = {
 	{
 		.name = KGSL_2D1_REG_MEMORY,
@@ -1136,6 +1135,7 @@ static struct resource kgsl_2d1_resources[] = {
 		.flags = IORESOURCE_IRQ,
 	},
 };
+#ifdef CONFIG_GPU_OVERCLOCK
 static struct kgsl_device_platform_data kgsl_2d1_pdata = {
 	.pwrlevel = {
 		{
